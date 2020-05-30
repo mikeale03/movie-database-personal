@@ -4,15 +4,9 @@ const fs = require('fs');
 const tmdb = require('./my_modules/tmdb');
 const omdb = require('./my_modules/omdb');
 
-//var Datastore = require('nedb');
 let dir = __dirname.replace(/\\/g, "/");
 let database = require('./my_modules/database');
 let db = new database(`${__dirname}/database/myDb`).db;
-
-/*fs.writeFile('server.dat', `${dir}/database/myDb`, function (err) {
-  if (err) throw err;
-  console.log('server.dat was made!');
-});*/
 
 let app = new Vue({
   el: '#app',
