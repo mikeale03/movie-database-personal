@@ -117,18 +117,6 @@ let app = new Vue({
             //return omdb.searchMovieId(data.imdb_id);
           }
         })
-        // .then((response) => {
-        //   if(response) {
-        //     let data = {imdbRating:response.data.imdbRating}
-        //     vm.movieData = Object.assign({},selectedMovie,data);
-        //     db.update({_id:movie._id},{ $set: data }, {returnUpdatedDocs: true},function(err, numReplaced, doc) {
-        //       console.log(numReplaced);
-        //       if(err) alert(err);
-        //       else
-        //         vm.movies.splice(index,1,doc); 
-        //     });
-        //   }
-        // }) 
         .catch(function (error) {
           vm.movieData = Object.assign({},movie);
           alert(`Api Error: ${error.message}`);
@@ -195,16 +183,7 @@ let app = new Vue({
       menu.popup(remote.getCurrentWindow());
     },
     play:(movie) => {
-      const { exec } = require('child_process');
-      exec('cd release & WindowsFormsApp1.exe "'+movie.path+'"', (error, stdout, stderr) => {
-        if (error) {
-          console.error(`exec error: ${error}`);
-          return;
-        }
-        console.log(`stdout: ${stdout}`);
-        console.log(`stderr: ${stderr}`);
-      });
-      
+      shell.openItem(movie.path);
     }
   },
 
@@ -283,10 +262,6 @@ ipcRenderer.on('readFiles', (event, files) => {
   let ext = ['.avi','.mp4', '.mkv', '.mpeg', '.wmv', '.mpg', '.flv','.webm']
   let valid = true;
   files.forEach(function(path) {
-    // if(valid == true && (path.charAt(0) !=='/' || path.charAt(1) !=='/') ) {
-    //   valid = false;
-    //   alert("Add a file in a shared network directory!")
-    // }
     if(valid) {
       let filename = path.slice(path.lastIndexOf('/')+1,path.length);
       let ind = filename.lastIndexOf('.');
@@ -321,7 +296,7 @@ ipcRenderer.on('readFiles', (event, files) => {
 })
 
 function readDir(dir) {
-  //if(dir.charAt(0)==='/' && dir.charAt(1)==='/') {
+  
     let readDir = require('./read_dir');
     let ext = ['.avi','.mp4', '.mkv', '.mpeg', '.wmv', '.mpg', '.flv','.webm']
     readDir(dir, ext, function(err,path,filename,ext) {
@@ -352,7 +327,4 @@ function readDir(dir) {
         });
       } 
     })
-  // } else {
-  //   alert("Add a shared network directory!")
-  // }
 }
